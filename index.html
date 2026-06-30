@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BUVETTE · ботанический крафт на живых травах</title>
+<meta name="description" content="BUVETTE · газировка, настоянная на настоящих листьях, ягодах и цветах. Пять вкусов, пять характеров. Без сахара-рафинада, концентратов и консервантов.">
+<meta name="theme-color" content="#f4f5f2">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BUVETTE · ботанический крафт на живых травах">
+<meta property="og:description" content="Газировка, настоянная на настоящих травах. Пять вкусов, пять характеров.">
+<meta property="og:locale" content="ru_RU">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --paper:#f4f5f2;
+  --paper-2:#ffffff;
+  --ink:#16191a;
+  --ink-soft:#434a4c;
+  --ink-faint:#7c8487;
+  --line:rgba(22,25,26,.13);
+  --line-soft:rgba(22,25,26,.07);
+  --accent:#1fb86b;
+  --deep:#0c6f3f;
+  --tint:#1fb86b14;
+  --disp:"Unbounded",sans-serif;
+  --sans:"Manrope",sans-serif;
+  --mono:"JetBrains Mono",monospace;
+  --pad:clamp(18px,4vw,46px);
+  --maxw:1320px;
+  --ease:cubic-bezier(.23,1,.32,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+  --r-card:16px;
+  --r-input:11px;
+  --theme-t:background-color .6s var(--ease),color .6s var(--ease),fill .6s var(--ease),border-color .6s var(--ease),box-shadow .6s var(--ease);
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+  transition:background-color .6s var(--ease);
+}
+h1,h2,h3,h4{font-family:var(--disp);font-weight:700;line-height:1.02;letter-spacing:-.03em}
+a{color:inherit;text-decoration:none}
+img,svg{display:block}
+::selection{background:var(--accent);color:var(--ink)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--mono);font-weight:500;letter-spacing:.02em}
+.eyebrow{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+
+/* ---------- ambient fizz ---------- */
+.fizz{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fizz b{position:absolute;bottom:-30px;border-radius:50%;background:var(--accent);opacity:0;will-change:transform,opacity;transition:background-color .6s var(--ease)}
+
+/* ---------- header ---------- */
+.head{position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:14px var(--pad);
+  transition:background-color .4s var(--ease),border-color .4s var(--ease),box-shadow .4s var(--ease);
+  border-bottom:1px solid transparent;}
+.head.scrolled{background:rgba(244,245,242,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line-soft)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand .dot{width:13px;height:13px;border-radius:50%;background:var(--accent);transition:var(--theme-t);box-shadow:0 0 0 4px var(--tint)}
+.nav{display:flex;align-items:center;gap:30px}
+.nav a{font-size:14.5px;font-weight:500;color:var(--ink-soft);transition:color .25s var(--ease);position:relative}
+.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-5px;height:2px;background:var(--accent);transition:right .3s var(--ease)}
+.nav a:hover{color:var(--ink)}
+.nav a:hover::after{right:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:14.5px;cursor:pointer;border:none;border-radius:100px;padding:12px 22px;transition:transform .18s var(--ease),background-color .3s var(--ease),box-shadow .3s var(--ease),color .3s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{box-shadow:0 8px 24px -8px rgba(22,25,26,.5)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--ink)}
+.head .btn{padding:10px 20px}
+.nav-toggle{display:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;z-index:1;padding-top:clamp(108px,15vh,160px);padding-bottom:clamp(40px,7vw,86px);min-height:100dvh;display:flex;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,64px);align-items:center;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px}
+.hero-eyebrow .pip{width:7px;height:7px;border-radius:50%;background:var(--accent);transition:var(--theme-t)}
+.hero h1{font-size:clamp(2.3rem,5.6vw,4.7rem);margin-bottom:24px}
+.hero h1 .mark{position:relative;white-space:nowrap;color:var(--deep);transition:color .6s var(--ease)}
+.hero h1 .mark::after{content:"";position:absolute;left:-.04em;right:-.04em;bottom:.06em;height:.26em;background:var(--accent);opacity:.32;z-index:-1;border-radius:3px;transition:background-color .6s var(--ease)}
+.hero p.lede{font-size:clamp(16px,1.35vw,18.5px);color:var(--ink-soft);max-width:30em;margin-bottom:32px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:13px;margin-bottom:38px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:30px}
+.hstat .n{font-family:var(--disp);font-weight:700;font-size:clamp(20px,2vw,26px);letter-spacing:-.02em}
+.hstat .l{font-size:12.5px;color:var(--ink-faint);margin-top:2px}
+
+/* stage / bottle */
+.stage{position:relative;display:flex;justify-content:center;align-items:center;min-height:440px}
+.stage-glow{position:absolute;width:74%;aspect-ratio:1;border-radius:50%;background:var(--accent);opacity:.16;filter:blur(60px);transition:background-color .6s var(--ease);z-index:0}
+.bottle{position:relative;z-index:2;width:clamp(190px,24vw,266px);height:auto;filter:drop-shadow(0 30px 40px rgba(22,25,26,.18))}
+.bottle #liquid,.bottle #liquidTop{fill:var(--accent);transition:fill .6s var(--ease)}
+.bottle #liquidTop{opacity:.86}
+.label-card{position:absolute;z-index:3;left:50%;top:53%;transform:translate(-50%,-50%);width:clamp(132px,16vw,176px);
+  background:var(--paper-2);border:1.5px solid var(--ink);border-radius:9px;
+  padding:13px 14px 12px;text-align:center;box-shadow:0 10px 22px -12px rgba(22,25,26,.4)}
+.label-card .lc-top{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase}
+.label-card .lc-name{font-family:var(--disp);font-weight:700;font-size:clamp(19px,2.2vw,25px);letter-spacing:-.03em;margin:5px 0 3px;color:var(--deep);transition:color .6s var(--ease)}
+.label-card .lc-bot{font-family:var(--mono);font-size:10px;font-style:normal;color:var(--ink-faint);letter-spacing:.02em}
+.label-card .lc-rule{height:1.5px;background:var(--accent);width:30px;margin:9px auto;transition:background-color .6s var(--ease)}
+.label-card .lc-vol{font-size:11px;color:var(--ink-soft);font-weight:600}
+.bottle-fizz{position:absolute;z-index:2;left:50%;top:0;transform:translateX(-50%);width:clamp(120px,15vw,168px);height:100%;pointer-events:none;overflow:hidden}
+.bottle-fizz b{position:absolute;bottom:8%;border-radius:50%;background:var(--paper-2);opacity:0;will-change:transform,opacity}
+
+@keyframes rise{
+  0%{transform:translateY(0) scale(.7);opacity:0}
+  14%{opacity:.85}
+  80%{opacity:.55}
+  100%{transform:translateY(var(--ry,-240px)) scale(1);opacity:0}
+}
+
+/* readout panel under stage */
+.readout{margin-top:22px;display:grid;grid-template-columns:1fr auto;gap:14px 18px;align-items:end;
+  border-top:1px solid var(--line);padding-top:18px}
+.readout .ro-note{font-size:14.5px;color:var(--ink-soft);max-width:24em;transition:color .3s var(--ease)}
+.readout .ro-price{font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-.02em;white-space:nowrap}
+.readout .ro-kcal{font-family:var(--mono);font-size:12px;color:var(--ink-faint);margin-top:3px;text-align:right}
+
+/* ---------- section frame ---------- */
+section.band{position:relative;z-index:1;padding:clamp(64px,10vw,128px) 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;margin-bottom:clamp(34px,5vw,60px)}
+.sec-head h2{font-size:clamp(1.9rem,4vw,3.2rem)}
+.sec-head .sh-sub{font-size:15.5px;color:var(--ink-soft);max-width:30em}
+.sec-head .sh-tag{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+
+/* ---------- hero bottle shelf (selector) ---------- */
+.shelf{margin-top:26px}
+.shelf-bottles{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;height:96px;padding:0 4px}
+.shelfb{flex:1 1 0;min-width:0;display:flex;justify-content:center;align-items:flex-end;background:none;border:none;padding:0;cursor:pointer}
+.shelfb svg{width:auto;height:88px;transform-origin:bottom center;transition:transform .4s var(--ease),opacity .35s var(--ease),filter .35s var(--ease)}
+.shelfb [data-liquid]{transition:fill .4s var(--ease)}
+.shelfb[aria-pressed="false"] svg{transform:scale(.57);opacity:.46;filter:saturate(.45)}
+.shelfb[aria-pressed="false"]:hover svg{opacity:.82;filter:saturate(.9)}
+.shelfb[aria-pressed="true"] svg{transform:scale(1)}
+.shelf-plank{height:9px;border-radius:4px;margin-top:-2px;
+  background:linear-gradient(180deg,#d8d2c4,#c2baa6);box-shadow:0 12px 20px -13px rgba(22,25,26,.55)}
+.shelf-cap{display:flex;align-items:center;justify-content:space-between;margin-top:11px}
+.shelf-cap .sc-l{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+.shelf-cap .sc-r{font-family:var(--mono);font-size:11px;color:var(--deep);transition:color .6s var(--ease)}
+
+/* ---------- flavors carte (vertical drink list) ---------- */
+.flavors{background:var(--paper-2);transition:background-color .6s var(--ease)}
+.carte{display:flex;flex-direction:column}
+.carte-row{display:flex;flex-direction:column;align-items:stretch;width:100%;text-align:left;
+  font:inherit;color:inherit;-webkit-appearance:none;appearance:none;
+  background:none;border:none;border-top:1px solid var(--line);cursor:pointer;
+  padding:clamp(20px,2.7vw,32px) 8px;transition:background-color .35s var(--ease),transform .3s var(--ease)}
+.carte-row:last-child{border-bottom:1px solid var(--line)}
+.carte-row:hover{background:var(--cardtint)}
+.carte-row[aria-pressed="true"]{background:var(--cardtint);transform:translateX(10px)}
+.cr-line{display:flex;align-items:flex-end;gap:16px;width:100%}
+.cr-no{font-family:var(--mono);font-size:13px;color:var(--ink-faint);flex:0 0 auto;min-width:22px;align-self:flex-start;padding-top:.5em;transition:color .4s var(--ease)}
+.cr-name{font-family:var(--disp);font-weight:700;font-size:clamp(1.7rem,3.7vw,3rem);letter-spacing:-.03em;line-height:1;flex:0 1 auto;color:var(--ink);transition:color .4s var(--ease)}
+.cr-lead{flex:1 1 auto;align-self:flex-end;height:0;border-bottom:2px dotted rgba(22,25,26,.28);transform:translateY(-.42em);min-width:26px}
+.carte-row[aria-pressed="true"] .cr-lead{border-bottom-color:var(--carddeep)}
+.cr-price{font-family:var(--disp);font-weight:700;font-size:clamp(1.15rem,1.9vw,1.6rem);letter-spacing:-.02em;flex:0 0 auto;color:var(--ink);transition:color .4s var(--ease);white-space:nowrap}
+.cr-sub{margin-top:11px;padding-left:calc(22px + 16px);font-size:14.5px;color:var(--ink-soft);max-width:54em}
+.cr-sub .lat{font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.02em}
+.carte-row[aria-pressed="true"] .cr-no,
+.carte-row[aria-pressed="true"] .cr-name,
+.carte-row[aria-pressed="true"] .cr-price{color:var(--carddeep)}
+
+/* ---------- craft (what's inside) ---------- */
+.craft-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,80px);align-items:start}
+.in-out{display:grid;gap:14px}
+.io-row{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.io-row:first-child{border-top:none}
+.io-ic{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;margin-top:1px}
+.io-ic.yes{background:var(--tint);color:var(--deep);transition:var(--theme-t)}
+.io-ic.no{background:rgba(22,25,26,.06);color:var(--ink-faint)}
+.io-ic svg{width:14px;height:14px}
+.io-row .io-t{font-weight:600;font-size:15.5px}
+.io-row .io-d{font-size:13.5px;color:var(--ink-faint);margin-top:2px}
+.craft-aside{background:var(--ink);color:var(--paper);border-radius:var(--r-card);padding:clamp(26px,3vw,38px);position:sticky;top:96px}
+.craft-aside .ca-q{font-family:var(--disp);font-weight:600;font-size:clamp(20px,2.2vw,27px);letter-spacing:-.02em;line-height:1.2}
+.craft-aside .ca-q em{font-style:normal;color:var(--accent);transition:color .6s var(--ease)}
+.craft-aside .ca-by{margin-top:22px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:rgba(244,245,242,.66)}
+.craft-aside .ca-by .av{width:38px;height:38px;border-radius:50%;background:var(--accent);transition:background-color .6s var(--ease);display:grid;place-items:center;font-family:var(--disp);font-weight:700;color:var(--ink);font-size:15px}
+
+/* ---------- process ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,26px);counter-reset:s}
+.step{border-top:2px solid var(--ink);padding-top:18px}
+.step .st-k{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--deep);transition:color .6s var(--ease);margin-bottom:12px}
+.step h3{font-size:clamp(18px,1.7vw,22px);font-weight:600;margin-bottom:10px}
+.step p{font-size:14px;color:var(--ink-soft)}
+
+/* ---------- buy ---------- */
+.buy{background:var(--paper-2);transition:background-color .6s var(--ease)}
+.stockists{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,3.4vw,46px) clamp(38px,6vw,88px)}
+.city-group{}
+.cg-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-top:2px solid var(--ink);padding-top:12px;margin-bottom:2px}
+.cg-city{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);font-weight:500}
+.cg-count{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);white-space:nowrap}
+.venue{padding:15px 2px;border-top:1px solid var(--line)}
+.venue:first-of-type{border-top:none}
+.venue .v-name{font-family:var(--disp);font-weight:600;font-size:clamp(17px,1.7vw,20px);letter-spacing:-.02em;color:var(--ink);transition:color .4s var(--ease)}
+.venue:hover .v-name{color:var(--deep)}
+.venue .v-addr{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+.venue .v-addr .v-tag{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.01em}
+.buy-online{margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  border:1.5px dashed var(--line);border-radius:var(--r-card);padding:22px 26px}
+.buy-online .bo-t{font-family:var(--disp);font-weight:600;font-size:clamp(18px,2vw,23px);letter-spacing:-.02em}
+.buy-online .bo-d{font-size:14px;color:var(--ink-soft);margin-top:4px}
+
+/* ---------- newsletter ---------- */
+.news{position:relative;z-index:1}
+.news-card{background:var(--ink);color:var(--paper);border-radius:clamp(18px,2.4vw,28px);
+  padding:clamp(34px,5vw,68px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,56px);align-items:center;overflow:hidden;position:relative}
+.news-card .nc-glow{position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:var(--accent);opacity:.22;filter:blur(50px);transition:background-color .6s var(--ease)}
+.news-card h2{font-size:clamp(1.7rem,3.4vw,2.8rem);color:var(--paper)}
+.news-card p{color:rgba(244,245,242,.7);font-size:15px;margin-top:14px;max-width:26em}
+.nform{position:relative;z-index:2}
+.nform .field{position:relative;margin-bottom:14px}
+.nform label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,245,242,.55);margin-bottom:8px}
+.nform input{width:100%;font-family:var(--sans);font-size:15.5px;color:var(--paper);background:rgba(244,245,242,.07);
+  border:1.5px solid rgba(244,245,242,.16);border-radius:var(--r-input);padding:14px 16px;transition:border-color .25s var(--ease),background-color .25s var(--ease)}
+.nform input::placeholder{color:rgba(244,245,242,.4)}
+.nform input:focus{outline:none;border-color:var(--accent);background:rgba(244,245,242,.1)}
+.nform input.bad{border-color:#ff6a6a}
+.nform .btn{width:100%;background:var(--accent);color:var(--ink);margin-top:4px}
+.nform .btn:hover{box-shadow:0 10px 26px -8px var(--accent)}
+.nform .note{font-size:12.5px;color:rgba(244,245,242,.5);margin-top:12px}
+.nform .status{font-size:14px;margin-top:14px;min-height:1.2em;font-weight:600}
+.nform .status.ok{color:var(--accent)}
+.nform .status.err{color:#ff8a8a}
+
+/* ---------- footer ---------- */
+.foot{position:relative;z-index:1;padding:clamp(54px,7vw,90px) 0 40px}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;padding-bottom:44px;border-bottom:1px solid var(--line)}
+.foot .f-brand{font-family:var(--disp);font-weight:800;font-size:24px;letter-spacing:-.02em;display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.foot .f-brand .dot{width:13px;height:13px;border-radius:50%;background:var(--accent);transition:background-color .6s var(--ease)}
+.foot .f-desc{font-size:14px;color:var(--ink-soft);max-width:24em}
+.foot h4{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+.foot ul{list-style:none;display:grid;gap:11px}
+.foot ul a{font-size:14px;color:var(--ink-soft);transition:color .2s var(--ease)}
+.foot ul a:hover{color:var(--ink)}
+.foot-bot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding-top:26px;font-size:13px;color:var(--ink-faint)}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media(max-width:1080px){
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .stage{order:-1;min-height:380px}
+  .craft-grid{grid-template-columns:1fr;gap:32px}
+  .craft-aside{position:static}
+  .news-card{grid-template-columns:1fr}
+  .foot-top{grid-template-columns:1fr 1fr}
+  .foot .f-brand-col{grid-column:1/-1}
+}
+@media(max-width:768px){
+  .nav{display:none}
+  .nav-toggle{display:inline-flex}
+  .steps{grid-template-columns:1fr 1fr;gap:22px}
+  .readout{grid-template-columns:1fr}
+  .readout .ro-price-wrap{display:flex;align-items:baseline;gap:14px}
+  .readout .ro-kcal{text-align:left}
+}
+@media(max-width:520px){
+  :root{--pad:18px}
+  .hero{padding-top:96px}
+  .hero-stats{gap:20px}
+  .steps,.stockists{grid-template-columns:1fr}
+  .foot-top{grid-template-columns:1fr}
+  .head .head-cta{display:none}
+  .carte-row{padding-left:0;padding-right:0}
+  .carte-row[aria-pressed="true"]{transform:translateX(6px)}
+  .cr-line{gap:10px}
+  .cr-no{min-width:0}
+  .cr-lead{min-width:14px}
+  .cr-sub{padding-left:0;margin-top:8px}
+  .cr-name{font-size:clamp(1.3rem,5.9vw,1.8rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  .rv{opacity:1;transform:none;transition:none}
+  .fizz,.bottle-fizz{display:none}
+  html{scroll-behavior:auto}
+}
+@media(prefers-reduced-transparency:reduce){
+  .head.scrolled{background:var(--paper)}
+}
+</style>
+</head>
+<body>
+<div class="fizz" id="ambientFizz" aria-hidden="true"></div>
+
+<header class="head" id="head">
+  <a class="brand" href="#top" aria-label="BUVETTE, на главную"><span class="dot"></span>BUVETTE</a>
+  <nav class="nav" aria-label="Основное меню">
+    <a href="#flavors">Вкусы</a>
+    <a href="#craft">Что внутри</a>
+    <a href="#process">Как делаем</a>
+    <a href="#buy">Где купить</a>
+  </nav>
+  <a class="btn btn-ink head-cta" href="#news">Подписаться</a>
+  <button class="btn btn-ghost nav-toggle" id="navToggle" aria-label="Открыть меню">Меню</button>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow eyebrow"><span class="pip"></span>Ботанический крафт · с 2019</span>
+        <h1>Газировка, настоянная<br>на <span class="mark">живых&nbsp;травах</span>.</h1>
+        <p class="lede">Никакого сиропа из бочки и порошковых концентратов. Мы завариваем настоящие листья, ягоды и цветы, доливаем родниковую воду и насыщаем углекислотой. Пять вкусов, пять разных характеров.</p>
+        <div class="hero-cta">
+          <a class="btn btn-ink" href="#flavors">Выбрать вкус</a>
+          <a class="btn btn-ghost" href="#buy">Где купить</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><div class="n">18&nbsp;часов</div><div class="l">настой на травах</div></div>
+          <div class="hstat"><div class="n">0&nbsp;г</div><div class="l">сахара-рафинада</div></div>
+          <div class="hstat"><div class="n">9</div><div class="l">регионов сбора</div></div>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="stage">
+          <div class="stage-glow"></div>
+          <svg class="bottle" viewBox="0 0 200 470" fill="none" aria-hidden="true">
+            <rect x="86" y="6" width="28" height="22" rx="4" fill="#16191a"/>
+            <rect x="89" y="26" width="22" height="18" fill="#16191a" opacity=".9"/>
+            <path d="M78 50c0-3 2-6 6-7l8-3V44h16v-4l8 3c4 1 6 4 6 7v18c14 8 22 22 22 40v286c0 12-10 22-22 22H78c-12 0-22-10-22-22V112c0-18 8-32 22-40V50Z" fill="#ffffff" stroke="#16191a" stroke-width="3"/>
+            <path id="liquid" d="M58 210v178c0 11 9 20 20 20h44c11 0 20-9 20-20V210H58Z"/>
+            <path id="liquidTop" d="M58 210c8-7 18 4 28 0s18-9 28-5 18 7 28 5v-6H58v6Z"/>
+            <rect x="64" y="250" width="72" height="3" rx="1.5" fill="#ffffff" opacity=".22"/>
+          </svg>
+          <div class="bottle-fizz" id="bottleFizz" aria-hidden="true"></div>
+          <div class="label-card">
+            <div class="lc-top">BUVETTE · No.<span id="lcIdx">01</span></div>
+            <div class="lc-name" id="lcName">Тархун</div>
+            <div class="lc-bot" id="lcBot">Artemisia dracunculus</div>
+            <div class="lc-rule"></div>
+            <div class="lc-vol">0,33 л · газированный настой</div>
+          </div>
+        </div>
+        <div class="readout" aria-live="polite">
+          <p class="ro-note" id="roNote">Травянисто-сладкий, с прохладным анисовым следом и чистым зелёным финишем.</p>
+          <div class="ro-price-wrap">
+            <div class="ro-price" id="roPrice">180&nbsp;₽</div>
+            <div class="ro-kcal" id="roKcal">38 ккал / 100 мл</div>
+          </div>
+        </div>
+        <div class="shelf" role="group" aria-label="Полка вкусов">
+          <div class="shelf-bottles" id="shelfBottles"></div>
+          <div class="shelf-plank" aria-hidden="true"></div>
+          <div class="shelf-cap">
+            <span class="sc-l">На полке · 5 вкусов</span>
+            <span class="sc-r" id="shelfActive">No.01 · Тархун</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLAVORS -->
+  <section class="band flavors" id="flavors">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <div class="sh-tag">Линейка · 5 настоев</div>
+          <h2>Пять характеров</h2>
+        </div>
+        <p class="sh-sub">Карта вкусов целиком. Наведите строку — этикетка на бутылке, пузырьки и тон всей страницы подстроятся под выбранный настой.</p>
+      </div>
+
+      <div class="carte rv" id="carte" role="listbox" aria-label="Карта вкусов"></div>
+    </div>
+  </section>
+
+  <!-- CRAFT -->
+  <section class="band" id="craft">
+    <div class="wrap craft-grid">
+      <div class="rv">
+        <div class="sec-head" style="margin-bottom:34px">
+          <div>
+            <div class="sh-tag">Состав · 3 да, 2 нет</div>
+            <h2>Что внутри бутылки</h2>
+          </div>
+        </div>
+        <div class="in-out">
+          <div class="io-row">
+            <span class="io-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>
+            <div><div class="io-t">Настой на живых травах</div><div class="io-d">Листья, ягоды и цветы завариваем целиком и держим 18 часов.</div></div>
+          </div>
+          <div class="io-row">
+            <span class="io-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>
+            <div><div class="io-t">Родниковая вода</div><div class="io-d">Мягкая, низкой минерализации. Возим из карельского источника.</div></div>
+          </div>
+          <div class="io-row">
+            <span class="io-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>
+            <div><div class="io-t">Угольная газация</div><div class="io-d">Мелкий стойкий пузырь без резкой кислотности.</div></div>
+          </div>
+          <div class="io-row">
+            <span class="io-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+            <div><div class="io-t">Без сахара-рафинада</div><div class="io-d">Лёгкая сладость идёт от мёда и самих ягод, не из мешка с песком.</div></div>
+          </div>
+          <div class="io-row">
+            <span class="io-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+            <div><div class="io-t">Без концентратов и красителей</div><div class="io-d">Цвет в стекле — настоящий цвет настоя, а не капля из пипетки.</div></div>
+          </div>
+        </div>
+      </div>
+      <aside class="craft-aside rv">
+        <div class="ca-q">«Мы хотели газировку, которую не стыдно поставить рядом с <em>хорошим чаем</em>. Поэтому начали с трав, а не с сахара».</div>
+        <div class="ca-by"><span class="av" id="caAv">М</span>Марта Зеленко, основательница буфетной</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="band" id="process" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <div class="sh-tag">Производство · 4 этапа</div>
+          <h2>Путь от грядки до стекла</h2>
+        </div>
+        <p class="sh-sub">Маленькими партиями, без спешки. Каждый этап мы делаем сами на производстве под Тверью.</p>
+      </div>
+      <div class="steps">
+        <div class="step rv"><div class="st-k">Сбор</div><h3>Травы и ягоды</h3><p>Собираем у проверенных хозяйств в сезон и сразу пускаем в работу, пока живые.</p></div>
+        <div class="step rv"><div class="st-k">Настой</div><h3>18 часов покоя</h3><p>Холодная и горячая мацерация, чтобы достать аромат, а не горечь.</p></div>
+        <div class="step rv"><div class="st-k">Газация</div><h3>Мелкий пузырь</h3><p>Насыщаем углекислотой при низкой температуре и сразу охлаждаем.</p></div>
+        <div class="step rv"><div class="st-k">Розлив</div><h3>Тёмное стекло</h3><p>Разливаем в стекло 0,33, чтобы вкус и цвет дожили до вашего стола.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUY -->
+  <section class="band buy" id="buy">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <div class="sh-tag">Где найти · 6 точек</div>
+          <h2>Купить BUVETTE</h2>
+        </div>
+        <p class="sh-sub">Мы в кофейнях, винотеках и магазинах у дома — от Москвы до Екатеринбурга. Список растёт каждый месяц.</p>
+      </div>
+      <div class="stockists">
+        <div class="city-group rv">
+          <div class="cg-head"><span class="cg-city">Москва</span><span class="cg-count">2 точки</span></div>
+          <div class="venue"><div class="v-name">Буфетная на Покровке</div><div class="v-addr">Покровка, 27 <span class="v-tag">· ежедневно 9:00–22:00</span></div></div>
+          <div class="venue"><div class="v-name">Кооператив «Чёрный»</div><div class="v-addr">Лялин переулок, 7 <span class="v-tag">· кофе и полки</span></div></div>
+        </div>
+        <div class="city-group rv">
+          <div class="cg-head"><span class="cg-city">Санкт-Петербург</span><span class="cg-count">2 точки</span></div>
+          <div class="venue"><div class="v-name">Лавка на Рубинштейна</div><div class="v-addr">Рубинштейна, 15 <span class="v-tag">· с 10:00</span></div></div>
+          <div class="venue"><div class="v-name">Гастроном «Сезон»</div><div class="v-addr">Большой проспект П.С., 48</div></div>
+        </div>
+        <div class="city-group rv">
+          <div class="cg-head"><span class="cg-city">Казань</span><span class="cg-count">1 точка</span></div>
+          <div class="venue"><div class="v-name">Маркет «Свежо»</div><div class="v-addr">Баумана, 12 <span class="v-tag">· фермерские полки</span></div></div>
+        </div>
+        <div class="city-group rv">
+          <div class="cg-head"><span class="cg-city">Екатеринбург</span><span class="cg-count">1 точка</span></div>
+          <div class="venue"><div class="v-name">Бар «Гранёный»</div><div class="v-addr">Ленина, 49 <span class="v-tag">· безалкогольная карта</span></div></div>
+        </div>
+      </div>
+      <div class="buy-online rv">
+        <div>
+          <div class="bo-t">Заказать домой</div>
+          <div class="bo-d">Набор из шести бутылок — все пять вкусов и одна на пробу. Доставка по России.</div>
+        </div>
+        <a class="btn btn-ink" href="#news">Собрать набор</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="band news wrap" id="news">
+    <div class="news-card rv">
+      <div class="nc-glow" aria-hidden="true"></div>
+      <div class="nc-copy">
+        <h2>Письма из буфетной</h2>
+        <p>Раз в месяц рассказываем про новые вкусы, сезонные сборы и точки продаж. Без спама и воды: только то, что налили бы вам сами.</p>
+      </div>
+      <form class="nform" id="newsForm" novalidate>
+        <div class="field">
+          <label for="nName">Как вас зовут</label>
+          <input id="nName" name="name" type="text" placeholder="Имя" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="nMail">Почта для писем</label>
+          <input id="nMail" name="email" type="email" placeholder="you@mail.ru" autocomplete="email" required>
+        </div>
+        <button class="btn" type="submit">Подписаться на рассылку</button>
+        <p class="note">Нажимая, вы соглашаетесь получать письма BUVETTE. Отписаться можно в один клик.</p>
+        <p class="status" id="nStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot wrap">
+  <div class="foot-top">
+    <div class="f-brand-col">
+      <div class="f-brand"><span class="dot"></span>BUVETTE</div>
+      <p class="f-desc">Ботанический крафт на живых травах. Варим маленькими партиями под Тверью с 2019 года.</p>
+    </div>
+    <div>
+      <h4>Линейка</h4>
+      <ul>
+        <li><a href="#flavors">Тархун</a></li>
+        <li><a href="#flavors">Облепиха</a></li>
+        <li><a href="#flavors">Смородина</a></li>
+        <li><a href="#flavors">Бузина</a></li>
+        <li><a href="#flavors">Барбарис</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Компания</h4>
+      <ul>
+        <li><a href="#craft">Что внутри</a></li>
+        <li><a href="#process">Производство</a></li>
+        <li><a href="#buy">Где купить</a></li>
+        <li><a href="#news">Рассылка</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Связь</h4>
+      <ul>
+        <li><a href="https://t.me" target="_blank" rel="noopener noreferrer">Телеграм</a></li>
+        <li><a href="#top">privet@buvette.ru</a></li>
+        <li><a href="#buy">Опт и кафе</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <span>© 2019–2026 BUVETTE. Сделано в России.</span>
+    <span class="mono">пейте холодным · 4–6&nbsp;°C</span>
+  </div>
+  <!-- GO BEYOND attribution -->
+  <style>@import url('https://cdn.jsdelivr.net/npm/@fontsource/sora@5.2.8/800.css');
+  .gb-mark{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 7px;margin-top:22px;padding-top:18px;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent);color:inherit;font-size:11.5px;line-height:1.55;letter-spacing:.01em}
+  .gb-mark__note{color:color-mix(in srgb,currentColor 64%,transparent);transition:color .25s}
+  .gb-mark:hover .gb-mark__note{color:color-mix(in srgb,currentColor 90%,transparent)}
+  .gb-mark__wm{font-family:'Sora',system-ui,-apple-system,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:-.01em;color:currentColor}
+  .gb-mark__arr{color:color-mix(in srgb,currentColor 72%,transparent);transition:transform .25s}
+  .gb-mark:hover .gb-mark__arr{transform:translate(2px,-2px)}
+  @media (prefers-reduced-motion:reduce){.gb-mark__arr{transition:none}}</style>
+  <a class="gb-mark" href="https://gobeyond-studio.vercel.app/" target="_blank" rel="noopener noreferrer" title="Открыть сайт студии GO BEYOND">
+    <span class="gb-mark__note">Демо-проект. Вымышленная организация. Создан как пример дизайна — продукт</span>
+    <span class="gb-mark__wm">GO&nbsp;BEYOND</span>
+    <span class="gb-mark__arr" aria-hidden="true">↗</span>
+  </a>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- flavor data ---- */
+  var flavors = [
+    {id:"tarhun",   idx:"01", name:"Тархун",   bot:"Artemisia dracunculus", note:"Травянисто-сладкий, с прохладным анисовым следом и чистым зелёным финишем.", accent:"#1fb86b", deep:"#0c6f3f", kcal:38, price:180},
+    {id:"oblepiha", idx:"02", name:"Облепиха", bot:"Hippophae rhamnoides",   note:"Кисло-яркий, солнечный, с медовой горчинкой на финише.",                  accent:"#ff6a32", deep:"#c4400f", kcal:42, price:190},
+    {id:"smorodina",idx:"03", name:"Смородина",bot:"Ribes nigrum",           note:"Густой тёмный ягодный тон с зелёной нотой смородинового листа.",          accent:"#b62a66", deep:"#7d1342", kcal:40, price:190},
+    {id:"buzina",   idx:"04", name:"Бузина",   bot:"Sambucus nigra",         note:"Цветочный и прохладный, с лёгким грушевым отливом.",                      accent:"#17a6c6", deep:"#0b6f86", kcal:36, price:185},
+    {id:"barbaris", idx:"05", name:"Барбарис", bot:"Berberis vulgaris",      note:"Терпко-красный, с леденцовой кислинкой из детства.",                      accent:"#e23a4e", deep:"#a01124", kcal:39, price:185}
+  ];
+
+  var root = document.documentElement;
+  var lcIdx = document.getElementById("lcIdx");
+  var lcName = document.getElementById("lcName");
+  var lcBot = document.getElementById("lcBot");
+  var roNote = document.getElementById("roNote");
+  var roPrice = document.getElementById("roPrice");
+  var roKcal = document.getElementById("roKcal");
+  var caAv = document.getElementById("caAv");
+  var shelfActive = document.getElementById("shelfActive");
+  var current = 0;
+
+  function applyFlavor(i){
+    var f = flavors[i]; current = i;
+    root.style.setProperty("--accent", f.accent);
+    root.style.setProperty("--deep", f.deep);
+    root.style.setProperty("--tint", f.accent + "16");
+    lcIdx.textContent = f.idx;
+    lcName.textContent = f.name;
+    lcBot.textContent = f.bot;
+    roNote.textContent = f.note;
+    roPrice.innerHTML = f.price + "&nbsp;₽";
+    roKcal.textContent = f.kcal + " ккал / 100 мл";
+    document.querySelectorAll(".carte-row").forEach(function(c,ci){ c.setAttribute("aria-pressed", ci===i ? "true":"false"); });
+    document.querySelectorAll(".shelfb").forEach(function(b,bi){ b.setAttribute("aria-pressed", bi===i ? "true":"false"); });
+    if(shelfActive) shelfActive.textContent = "No."+f.idx+" · "+f.name;
+  }
+
+  /* ---- mini bottle for shelf ---- */
+  function miniBottleSVG(accent){
+    var body = "M16.5 16 L23.5 16 L23.5 24 C23.5 26 24.5 27 26 28 C28 29.5 29 32 29 36 L29 100 C29 104 26 107 22 107 L18 107 C14 107 11 104 11 100 L11 36 C11 32 12 29.5 14 28 C15.5 27 16.5 26 16.5 24 Z";
+    var liquid = "M11 60 L29 60 L29 100 C29 104 26 107 22 107 L18 107 C14 107 11 104 11 100 Z";
+    return '<svg viewBox="0 0 40 116" fill="none" aria-hidden="true">'+
+      '<rect x="15" y="2" width="10" height="8" rx="2" fill="#16191a"/>'+
+      '<rect x="16.5" y="9" width="7" height="7" fill="#16191a" opacity=".85"/>'+
+      '<path d="'+body+'" fill="#ffffff"/>'+
+      '<path data-liquid d="'+liquid+'" fill="'+accent+'"/>'+
+      '<path d="'+body+'" fill="none" stroke="#16191a" stroke-width="2"/>'+
+    '</svg>';
+  }
+
+  /* ---- build vertical carte ---- */
+  var carte = document.getElementById("carte");
+  var canHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  flavors.forEach(function(f,i){
+    var r = document.createElement("button");
+    r.type = "button";
+    r.className = "carte-row";
+    r.setAttribute("role","option");
+    r.setAttribute("aria-pressed", i===0?"true":"false");
+    r.style.setProperty("--cardac", f.accent);
+    r.style.setProperty("--carddeep", f.deep);
+    r.style.setProperty("--cardtint", f.accent + "14");
+    r.innerHTML =
+      '<span class="cr-line">'+
+        '<span class="cr-no">No.'+f.idx+'</span>'+
+        '<span class="cr-name">'+f.name+'</span>'+
+        '<span class="cr-lead" aria-hidden="true"></span>'+
+        '<span class="cr-price">'+f.price+'&nbsp;₽</span>'+
+      '</span>'+
+      '<span class="cr-sub"><span class="lat">'+f.bot+'</span> · '+f.kcal+' ккал / 100 мл · '+f.note+'</span>';
+    r.addEventListener("click", function(){ applyFlavor(i); });
+    if(canHover) r.addEventListener("mouseenter", function(){ applyFlavor(i); });
+    carte.appendChild(r);
+  });
+
+  /* ---- build hero shelf ---- */
+  var shelfBottles = document.getElementById("shelfBottles");
+  flavors.forEach(function(f,i){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "shelfb";
+    b.setAttribute("aria-pressed", i===0?"true":"false");
+    b.setAttribute("aria-label", "No."+f.idx+" · "+f.name);
+    b.innerHTML = miniBottleSVG(f.accent);
+    b.addEventListener("click", function(){ applyFlavor(i); });
+    shelfBottles.appendChild(b);
+  });
+
+  applyFlavor(0);
+
+  /* ---- fizz generators ---- */
+  function spawnFizz(container, count, opts){
+    if(reduce) return;
+    for(var i=0;i<count;i++){
+      var b = document.createElement("b");
+      var size = opts.min + Math.random()*(opts.max-opts.min);
+      b.style.width = b.style.height = size.toFixed(1)+"px";
+      b.style.left = (Math.random()*100)+"%";
+      var dur = opts.durMin + Math.random()*(opts.durMax-opts.durMin);
+      var rise = -(opts.riseMin + Math.random()*(opts.riseMax-opts.riseMin));
+      b.style.setProperty("--ry", rise.toFixed(0)+"px");
+      b.style.animation = "rise "+dur.toFixed(2)+"s linear "+(Math.random()*dur).toFixed(2)+"s infinite";
+      if(opts.tint) b.style.background = "var(--accent)";
+      container.appendChild(b);
+    }
+  }
+  spawnFizz(document.getElementById("ambientFizz"), 16, {min:5,max:13,durMin:9,durMax:16,riseMin:innerHeight*0.6,riseMax:innerHeight*1.1,tint:true});
+  spawnFizz(document.getElementById("bottleFizz"), 14, {min:4,max:9,durMin:2.6,durMax:4.6,riseMin:170,riseMax:300,tint:false});
+
+  /* ---- header scroll ---- */
+  var head = document.getElementById("head");
+  function onScroll(){ head.classList.toggle("scrolled", window.scrollY>14); }
+  onScroll(); window.addEventListener("scroll", onScroll, {passive:true});
+
+  /* ---- mobile menu (anchor to flavors) ---- */
+  document.getElementById("navToggle").addEventListener("click", function(){
+    document.getElementById("flavors").scrollIntoView({behavior:reduce?"auto":"smooth"});
+  });
+
+  /* ---- reveal ---- */
+  var rvs = document.querySelectorAll(".rv");
+  if("IntersectionObserver" in window && !reduce){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, {threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+    rvs.forEach(function(el){ io.observe(el); });
+  } else {
+    rvs.forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---- newsletter form ---- */
+  var form = document.getElementById("newsForm");
+  var status = document.getElementById("nStatus");
+  var mailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function check(input){
+    var v = input.value.trim(), ok = true;
+    if(input.hasAttribute("required") && !v) ok=false;
+    if(input.type==="email" && v && !mailRe.test(v)) ok=false;
+    input.classList.toggle("bad", !ok);
+    return ok;
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var inputs = form.querySelectorAll("input"), allOk=true, first=null;
+    inputs.forEach(function(inp){ var ok=check(inp); if(!ok && !first) first=inp; if(!ok) allOk=false; });
+    if(!allOk){
+      status.textContent = "Проверьте подсвеченные поля.";
+      status.className = "status err";
+      if(first) first.focus();
+      return;
+    }
+    var name = form.querySelector("[name=name]").value.trim();
+    status.textContent = "Готово, " + name + ". Первое письмо придёт со следующим сбором.";
+    status.className = "status ok";
+    form.reset();
+  });
+  form.querySelectorAll("input").forEach(function(inp){
+    inp.addEventListener("input", function(){ if(inp.classList.contains("bad")) check(inp); });
+  });
+})();
+</script>
+</body>
+</html>
